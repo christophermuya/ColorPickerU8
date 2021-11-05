@@ -12,15 +12,16 @@ angular.module("umbraco").controller("U8Muya.ColorPickerController",
             $scope.model.config.preferredFormat = "rgb";
         }
 
-        $scope.showPaletteOnly = convertToBoolean($scope.model.config.showPaletteOnly);
-
-        $scope.showColorValue = convertToBoolean($scope.model.config.showColorValue);
+        $scope.showPaletteOnly = convertToBoolean($scope.model.config.showPaletteOnly ?? false);
+        $scope.showColorValue = convertToBoolean($scope.model.config.showColorValue ?? true);
 
         assetsService.loadJs("/App_Plugins/ColorPickerU8/lib/spectrum/spectrum.js", $scope).then(function () {
             var predefinedColor = [];
-            for (i = 0; i < $scope.model.config.predefinedColor.length; i++) {
-                predefinedColor.push($scope.model.config.predefinedColor[i].value);
-            }
+			var configPredefinedColors = $scope.model.config.predefinedColor ?? [];
+			for (i = 0; i < configPredefinedColors.length; i++) {
+				predefinedColor.push(configPredefinedColors[i].value);
+			}
+            
             $element.find("input").spectrum({
                 containerClassName: 'sp-boxCustom',
                 color: $scope.model.value,
